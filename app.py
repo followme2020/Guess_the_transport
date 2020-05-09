@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, redirect, url_for
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms.fields import RadioField, SubmitField
 from guess import Guess
 
@@ -11,7 +11,7 @@ game.expand('Car', 'Motor Cycle', 'It has 4 wheels?', False)
 game.expand('Motor Cycle', 'Train', '2 wheels?', False)
 
 
-class YesNoQuestionForm(Form):
+class YesNoQuestionForm(FlaskForm):
     answer = RadioField('Your answer', choices=[('yes', 'Yes'), ('no', 'No')])
     submit = SubmitField('Submit')
 
