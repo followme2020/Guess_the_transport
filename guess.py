@@ -23,14 +23,12 @@ class Guess:
             None
 
         Example:
-            The example below sets up a "Guess the Programming Language" game
-            with Python, C++, Java and Ruby:
+            The example below sets up a "Guess the Vihecle" game
+            with Car, Motor Cycle and Train:
 
-                game = Guess('Python')
-                game.expand('Python', 'C++', 'Is it interpreted?', True)
-                game.expand('C++', 'Java', 'Does it run on a VM?', True)
-                game.expand('Python', 'Ruby', 'Does it enforce indentation?',
-                            False)
+                game = Guess('Car')
+                game.expand('Car', 'Motor Cycle', 'It has 2 wheels?', False)
+                game.expand('Motor Cycle', 'Train', 'It moves on rails?', True)
         """
         old_guess_id = self._get_guess_id(old_guess)
         if old_guess_id is None:
