@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms.fields import RadioField, SubmitField
+from wtforms.fields import RadioField, StringField, SubmitField
 from guess import Guess
 
 app = Flask(__name__)
@@ -13,6 +13,15 @@ game.expand('Motor Cycle', 'Train', '2 wheels?', False)
 
 class YesNoQuestionForm(FlaskForm):
     answer = RadioField('Your answer', choices=[('yes', 'Yes'), ('no', 'No')])
+    submit = SubmitField('Submit')
+
+
+class LearnForm(FlaskForm):
+    vehicle = StringField('What vehicle did you pick?')
+    question = StringField('what is a question that differentiates your'
+                           'vehicle from mine?')
+    answer = RadioField('What is the answer for your question?',
+                        choices=[('yes', 'Yes'), ('no', 'No')])
     submit = SubmitField('Submit')
 
 
@@ -32,10 +41,25 @@ def question(id):
         return redirect(url_for('question', id=new_id))
     return render_template('question.html', question=question, form=form)
 
-@app.route('/guess/<int:id>')
-def guess(id):
-    return render_template('guess.html', guess=game.get_guess(id))
 
+@app.route('/guess/<int:id>', methods=['GET','POST'])
+def guess(id):
+    form = YesNoQuestionForm()
+    if form.validate_on_submit():
+        if form.answer.data == 'yes':
+            return redirect(url_for('index'))
+        return redirect(url_for('learn', id=id))
+    return render_template('guess.html', guess=game.get_guess(id), form=form)
+
+@app.route('/learn/<int:id>', methods=['GET', 'POST'])
+def learn(id):
+    guess = game.get_guess(id)
+    form = LearnForm()
+    if form.validate_on_submit():
+        game.expand(guess, form.vehicle.data, form.question.data,
+                    form.answer.data == 'yes')
+        return redirect(url_for('index'))
+    return render_template('learn.html', guess=guess, form=form)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)

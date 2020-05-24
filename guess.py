@@ -23,7 +23,7 @@ class Guess:
             None
 
         Example:
-            The example below sets up a "Guess the Vihecle" game
+            The example below sets up a "Guess the Vehicle" game
             with Car, Motor Cycle and Train:
 
                 game = Guess('Car')
