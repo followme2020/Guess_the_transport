@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms.fields import RadioField, StringField, SubmitField
+from wtforms.validators import DataRequired
 from guess import Guess
 
 app = Flask(__name__)
@@ -17,9 +18,10 @@ class YesNoQuestionForm(FlaskForm):
 
 
 class LearnForm(FlaskForm):
-    vehicle = StringField('What vehicle did you pick?')
+    vehicle = StringField('What vehicle did you pick?',
+                          validators=[DataRequired()])
     question = StringField('what is a question that differentiates your'
-                           'vehicle from mine?')
+                           'vehicle from mine?',validators=[DataRequired()])
     answer = RadioField('What is the answer for your question?',
                         choices=[('yes', 'Yes'), ('no', 'No')])
     submit = SubmitField('Submit')
@@ -50,6 +52,7 @@ def guess(id):
             return redirect(url_for('index'))
         return redirect(url_for('learn', id=id))
     return render_template('guess.html', guess=game.get_guess(id), form=form)
+
 
 @app.route('/learn/<int:id>', methods=['GET', 'POST'])
 def learn(id):
