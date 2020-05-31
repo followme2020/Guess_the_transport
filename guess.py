@@ -27,8 +27,8 @@ class Guess:
             with Car, Motor Cycle and Train:
 
                 game = Guess('Car')
-                game.expand('Car', 'Motor Cycle', 'It has 2 wheels?', False)
-                game.expand('Motor Cycle', 'Train', 'It moves on rails?', True)
+                game.expand('Car', 'Motorcycle', 'It has 2 wheels?', False)
+                game.expand('Motorcycle', 'Train', 'It moves on rails?', True)
         """
         old_guess_id = self._get_guess_id(old_guess)
         if old_guess_id is None:
